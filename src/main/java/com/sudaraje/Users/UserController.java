@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,6 +35,19 @@ public class UserController {
 		}
 		else {
 			userService.insertUser(user);
+			return new ResponseEntity<>(HttpStatus.ACCEPTED);
+		}
+		
+	}
+	
+	@RequestMapping(method=RequestMethod.DELETE, value="/users/{username}")
+	@ResponseBody
+	public ResponseEntity<Object> deleteUser(@PathVariable String username) {
+		if(userService.findByUsername(username).size()==0){
+			return new ResponseEntity<>("UserName doesnt exists !!!",HttpStatus.NOT_ACCEPTABLE);
+		}
+		else {
+			userService.deleteUser(username);
 			return new ResponseEntity<>(HttpStatus.ACCEPTED);
 		}
 		
